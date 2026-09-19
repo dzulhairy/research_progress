@@ -1,5 +1,5 @@
 'use strict';
-const sections=[['overview','Overview'],['research','Research progress'],['outputs','Research outputs'],['field','Field highlights'],['logbook','Complete logbook'],['next','Timeline & milestones']];
+const sections=[['overview','Overview'],['team','Research team'],['research','Research progress'],['outputs','Research outputs'],['field','Field highlights'],['logbook','Complete logbook'],['next','Timeline & milestones']];
 const domainNames=['Epidemiology and disease control','Family health','Health system management','Environmental health','Occupational health','Health promotion'];
 const shortDomains=['Epidemiology','Family health','Health systems','Environmental','Occupational','Health promotion'];
 const researchTabs=[['profile','Study profile'],['dataset','Data preparation'],['obj1','Objective 1'],['obj2','Objective 2'],['obj3','Objective 3'],['manuscript','Manuscript']];
@@ -9,7 +9,7 @@ const state={view:'overview',research:'obj1',domain:'all',query:'',presenting:fa
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const badge=(text,type='')=>`<span class="badge ${type}">${esc(text)}</span>`;
 const goto=(label,view,extra='')=>`<button class="button ghost" type="button" data-view="${view}" ${extra}>${label} <span aria-hidden="true">↗</span></button>`;
-const heading=(number,title,intro)=>`<div class="eyebrow">${number} / ${title==='Progress at a glance'?'RESEARCH PROGRESS':esc(sections.find(x=>x[0]===state.view)?.[1]||title)}</div><h1>${esc(title)}</h1>${intro?`<p class="intro">${intro}</p>`:''}`;
+const heading=(number,title,intro)=>`<div class="eyebrow">${String(sections.findIndex(x=>x[0]===state.view)+1).padStart(2,'0')} / ${title==='Progress at a glance'?'RESEARCH PROGRESS':esc(sections.find(x=>x[0]===state.view)?.[1]||title)}</div><h1>${esc(title)}</h1>${intro?`<p class="intro">${intro}</p>`:''}`;
 const workRows=rows=>`<div class="work-list">${rows.map((r,i)=>`<div class="work-item"><span class="step">${String(i+1).padStart(2,'0')}</span><h3>${r[0]}</h3><p>${r[1]}</p></div>`).join('')}</div>`;
 const dl=rows=>`<dl>${rows.map(r=>`<div class="kv"><dt>${r[0]}</dt><dd>${r[1]}</dd></div>`).join('')}</dl>`;
 function overview(){return `${heading('01','Progress at a glance','Doctor of Public Health · School of Medical Sciences, Universiti Sains Malaysia')}
@@ -76,7 +76,17 @@ function next(){
 }
 function openGantt(index){const r=ganttRows[Number(index)];if(!r)return;document.getElementById('detail-content').innerHTML=`<div class="eyebrow">Research schedule</div><h2>${r.name}</h2>${badge(r.range,'blue')}<p class="lead" style="margin-top:24px">${r.note}</p><p class="meta">Planned timing transcribed from the supplied Gantt chart. This bar does not represent actual percentage completion.</p>`;dialog.showModal();}
 
-const renderers={overview,research,outputs,field,logbook,next};
+
+const teamMembers=[
+ {name:'Dr Dzul Hairy bin Mohd Ramlan',role:'Principal Investigator',title:'Doctor of Public Health Candidate',affiliation:'School of Medical Sciences · Universiti Sains Malaysia',image:'team-supervision.png',box:'36 213 520 480',width:2048,height:1147},
+ {name:'AP Dr Nik Rosmawati binti Nik Husain',role:'Main Supervisor',title:'Lecturer · Public Health Medicine Specialist',affiliation:'Department of Community Medicine · School of Medical Sciences · Universiti Sains Malaysia',image:'team-supervision.png',box:'782 213 519 480',width:2048,height:1147},
+ {name:'Dr Mohd Faiz bin Ibrahim',role:'Co-supervisor',title:'Public Health Medicine Specialist',affiliation:'Environmental Health Research Centre · Institute for Medical Research · National Institutes of Health Malaysia',image:'team-supervision.png',box:'1504 213 497 480',width:2048,height:1147},
+ {name:'Dr Siti Nurbaya binti Mohd Nawi',role:'Research Collaborator',title:'Geriatrics',affiliation:'School of Medical Sciences · Universiti Sains Malaysia',image:'team-nurbaya.png',box:'150 105 330 360',width:2048,height:1385},
+ {name:'Dr Mohamad Fadli Kharie',role:'Research Collaborator',title:'Senior Principal Assistant Director',affiliation:'Ministry of Health Malaysia',image:'team-fadli.png',box:'18 49 502 502',width:2048,height:573}
+];
+function team(){return `${heading('02','Research team','The investigators, supervisors and collaborators supporting this DrPH research.')}<style>.team-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:20px}.team-card{grid-column:span 2;text-align:center;padding:26px 20px;border-top:3px solid var(--teal)}.team-card:nth-child(n+4){grid-column:span 3}.team-portrait{display:block;width:150px;height:150px;border-radius:50%;overflow:hidden;margin:0 auto 20px;background:#edf3f5}.team-card h2{font-size:1.13rem;line-height:1.45;margin:15px 0 10px}.team-card p{font-size:.85rem;margin:0 0 10px;color:var(--muted)}.team-card .team-title{color:var(--teal);font-weight:600}.team-card details{text-align:left;border:0}.team-card summary{font-size:.8rem;padding:10px 0}.team-card .details-body{font-size:.85rem;padding:0}.team-card:nth-child(n+4) .team-portrait{width:120px;height:120px}@media(max-width:650px){.team-grid{grid-template-columns:1fr}.team-card,.team-card:nth-child(n+4){grid-column:auto}}</style><div class="team-grid">${teamMembers.map(m=>`<article class="panel team-card"><svg class="team-portrait" viewBox="${m.box}" role="img" aria-label="Portrait of ${esc(m.name)}"><image href="assets/${m.image}" width="${m.width}" height="${m.height}"/></svg>${badge(m.role,m.role.includes('Collaborator')?'blue':'')}<h2>${esc(m.name)}</h2><p class="team-title">${esc(m.title)}</p><details><summary>Institution / affiliation</summary><div class="details-body">${esc(m.affiliation)}</div></details></article>`).join('')}</div>`;}
+
+const renderers={overview,team,research,outputs,field,logbook,next};
 function render(){
  document.getElementById('navigation').innerHTML=sections.map(([id,label],i)=>`<a href="#${id}" class="nav-link ${id===state.view?'active':''}" ${id===state.view?'aria-current="page"':''}><span class="index">0${i+1}</span><span>${label}</span></a>`).join('');
  content.innerHTML=`<div class="view-enter">${renderers[state.view]()}</div>`;
