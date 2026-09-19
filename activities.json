@@ -1,0 +1,340 @@
+[
+  {
+    "id": 1,
+    "domain": 0,
+    "date": "29 Mar 2026",
+    "title": "TB mortality review Hospital Besut",
+    "role": "Participant",
+    "pages": "45–50",
+    "flag": "",
+    "notes": []
+  },
+  {
+    "id": 2,
+    "domain": 0,
+    "date": "31 Mar 2026",
+    "title": "CDC and surveillance audit KK Pasir Akar",
+    "role": "Auditor",
+    "pages": "60–65",
+    "flag": "",
+    "notes": []
+  },
+  {
+    "id": 3,
+    "domain": 0,
+    "date": "6 Apr 2026",
+    "title": "TB active case detection MRSM Besut",
+    "role": "District TB team member",
+    "pages": "66–70; summary 10",
+    "flag": "Date discrepancy",
+    "notes": [
+      "The detailed TB active case detection report records 6 April 2026; the summary matrix records 7 April 2026."
+    ]
+  },
+  {
+    "id": 4,
+    "domain": 0,
+    "date": "6 Apr 2026",
+    "title": "Dengue source reduction and enforcement, Kg Gong Nering",
+    "role": "Vector Unit team member",
+    "pages": "119–123",
+    "flag": "",
+    "notes": []
+  },
+  {
+    "id": 5,
+    "domain": 0,
+    "date": "7 Apr 2026",
+    "title": "Influenza active case detection SMIDI",
+    "role": "CDC team member",
+    "pages": "71–75",
+    "flag": "",
+    "notes": []
+  },
+  {
+    "id": 6,
+    "domain": 0,
+    "date": "21 May 2026",
+    "title": "Measles outbreak response Marang",
+    "role": "Team leader",
+    "pages": "135–141",
+    "flag": "",
+    "notes": []
+  },
+  {
+    "id": 7,
+    "domain": 0,
+    "date": "22 Jun 2026",
+    "title": "District disaster management course: EMT operations",
+    "role": "Speaker and facilitator",
+    "pages": "148–154; summary 10",
+    "flag": "Date discrepancy",
+    "notes": [
+      "The detailed disaster management course report records 22 June 2026; the summary matrix records 21 June 2026."
+    ]
+  },
+  {
+    "id": 8,
+    "domain": 0,
+    "date": "26–27 Jul 2026",
+    "title": "Foodborne outbreak investigation Pulau Perhentian",
+    "role": "Investigator",
+    "pages": "180–185",
+    "flag": "",
+    "notes": []
+  },
+  {
+    "id": 9,
+    "domain": 1,
+    "date": "2 Mar 2026",
+    "title": "District Wound Care Committee meeting",
+    "role": "Participant",
+    "pages": "30–33",
+    "flag": "",
+    "notes": []
+  },
+  {
+    "id": 10,
+    "domain": 1,
+    "date": "1 Apr 2026",
+    "title": "Integrated supervision, cold chain and CDC review, KK Pulau Perhentian",
+    "role": "Supervision team member",
+    "pages": "34–39; summary 10, 12",
+    "flag": "",
+    "notes": [
+      "The integrated supervision, cold chain and CDC review entries at KK Pulau Perhentian on the same date are grouped as a single activity."
+    ]
+  },
+  {
+    "id": 11,
+    "domain": 1,
+    "date": "11 Jun 2026",
+    "title": "Under-five mortality review Besut–Setiu",
+    "role": "Participant",
+    "pages": "142–147",
+    "flag": "",
+    "notes": []
+  },
+  {
+    "id": 12,
+    "domain": 1,
+    "date": "28 Jun 2026",
+    "title": "Pre-pregnancy care service strengthening course",
+    "role": "Speaker and facilitator",
+    "pages": "172–179",
+    "flag": "",
+    "notes": []
+  },
+  {
+    "id": 13,
+    "domain": 2,
+    "date": "1 Mar 2026",
+    "title": "Financial and medical records audit Selected primary care facilities",
+    "role": "Audit team member",
+    "pages": "25–29",
+    "flag": "",
+    "notes": []
+  },
+  {
+    "id": 14,
+    "domain": 2,
+    "date": "9 Mar 2026",
+    "title": "East Coast Border Initiative Meeting (ECBIM)",
+    "role": "Participant",
+    "pages": "Summary 14",
+    "flag": "Summary entry",
+    "notes": [
+      "This activity is recorded in the domain summary. A separate detailed activity report was not located."
+    ]
+  },
+  {
+    "id": 15,
+    "domain": 2,
+    "date": "12 Mar 2026",
+    "title": "MDB Licensing, Enforcement and Law Committee meeting",
+    "role": "Meeting participation (summary entry)",
+    "pages": "Summary 14",
+    "flag": "Summary entry",
+    "notes": [
+      "This activity is recorded in the domain summary. A separate detailed activity report was not located."
+    ]
+  },
+  {
+    "id": 16,
+    "domain": 2,
+    "date": "29 Mar 2026",
+    "title": "Public complaint investigation report (SiSPAA), KK Kuala Besut",
+    "role": "Role not stated in the logbook",
+    "pages": "51–59",
+    "flag": "Role unconfirmed",
+    "notes": [
+      "The logbook includes this public complaint case report, but it does not state the candidate’s role. It is not credited here as an investigation performed by the candidate."
+    ]
+  },
+  {
+    "id": 17,
+    "domain": 2,
+    "date": "12 Apr 2026",
+    "title": "PKD Besut management meeting",
+    "role": "Participant / medical officer",
+    "pages": "76–81",
+    "flag": "",
+    "notes": []
+  },
+  {
+    "id": 18,
+    "domain": 2,
+    "date": "14 Apr 2026",
+    "title": "District disease surveillance (ME13) presentation to local authority",
+    "role": "Presenter",
+    "pages": "87–91",
+    "flag": "",
+    "notes": []
+  },
+  {
+    "id": 19,
+    "domain": 2,
+    "date": "16 Apr 2026",
+    "title": "NMRR / MREC research registration workshop, KK Kota Putera",
+    "role": "Presenter and facilitator",
+    "pages": "92–96",
+    "flag": "",
+    "notes": []
+  },
+  {
+    "id": 20,
+    "domain": 2,
+    "date": "7 May 2026",
+    "title": "Interagency coordination on food premises and environmental cleanliness",
+    "role": "PKD Besut representative",
+    "pages": "124–128",
+    "flag": "",
+    "notes": [
+      "The interagency meeting covered Medan Selera Kota Putera and Pantai Benting Lintang."
+    ]
+  },
+  {
+    "id": 21,
+    "domain": 2,
+    "date": "1 Jul 2026",
+    "title": "Ops Cakna public health law enforcement",
+    "role": "Medical officer / enforcement team",
+    "pages": "186–191",
+    "flag": "",
+    "notes": []
+  },
+  {
+    "id": 22,
+    "domain": 2,
+    "date": "22 Jul 2026",
+    "title": "State-level CCMS waiting-time coordination",
+    "role": "PKD Besut representative",
+    "pages": "165–171",
+    "flag": "",
+    "notes": []
+  },
+  {
+    "id": 23,
+    "domain": 2,
+    "date": "28 Jul 2026",
+    "title": "KPI PPTPA / NIA performance audit",
+    "role": "Lead auditor / Chief Auditor, Group 2",
+    "pages": "198–203",
+    "flag": "",
+    "notes": []
+  },
+  {
+    "id": 24,
+    "domain": 3,
+    "date": "10 Mar 2026",
+    "title": "Food hygiene inspection Bazar Ramadan Gong Bayong",
+    "role": "Auditor",
+    "pages": "40–44",
+    "flag": "",
+    "notes": []
+  },
+  {
+    "id": 25,
+    "domain": 3,
+    "date": "28 Apr 2026",
+    "title": "Water sampling and quality assessment (UKU)",
+    "role": "Assessor",
+    "pages": "102–106",
+    "flag": "",
+    "notes": []
+  },
+  {
+    "id": 26,
+    "domain": 4,
+    "date": "27 Apr 2026",
+    "title": "LTBI awareness for dental healthcare workers",
+    "role": "Presenter",
+    "pages": "97–101",
+    "flag": "",
+    "notes": []
+  },
+  {
+    "id": 27,
+    "domain": 4,
+    "date": "29 Apr 2026",
+    "title": "Workplace accident investigation review, KK Kota Putera",
+    "role": "Participant in investigation review",
+    "pages": "107–118",
+    "flag": "",
+    "notes": [
+      "29 April 2026 is the investigation date. The incident was recorded on 28 April 2026."
+    ]
+  },
+  {
+    "id": 28,
+    "domain": 4,
+    "date": "14 May 2026",
+    "title": "Workplace safety inspection and audit, PMA Tok Bali",
+    "role": "Participant",
+    "pages": "129–134",
+    "flag": "",
+    "notes": []
+  },
+  {
+    "id": 29,
+    "domain": 4,
+    "date": "27 Jul 2026",
+    "title": "ProLabCare: hazard management for school laboratory assistants",
+    "role": "Invited speaker",
+    "pages": "192–197",
+    "flag": "",
+    "notes": []
+  },
+  {
+    "id": 30,
+    "domain": 5,
+    "date": "12 Apr 2026",
+    "title": "TB awareness and prevention talk MRSM Besut",
+    "role": "Speaker",
+    "pages": "82–86",
+    "flag": "",
+    "notes": []
+  },
+  {
+    "id": 31,
+    "domain": 5,
+    "date": "22 Apr 2026",
+    "title": "USM academic visit and community engagement, PKD Besut / FELDA Tenang",
+    "role": "Health representative",
+    "pages": "Summary 17",
+    "flag": "Summary entry",
+    "notes": [
+      "This activity is recorded in the domain summary. A separate detailed activity report was not located."
+    ]
+  },
+  {
+    "id": 32,
+    "domain": 5,
+    "date": "2 Jul 2026",
+    "title": "K-MindSet community carnival Kg Lapan Kotak",
+    "role": "Medical officer / programme committee",
+    "pages": "155–164",
+    "flag": "",
+    "notes": []
+  }
+]
