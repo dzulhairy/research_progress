@@ -1,5 +1,5 @@
 'use strict';
-const sections=[['overview','Overview'],['team','Research team'],['research','Research progress'],['meetings','Supervisory meetings'],['outputs','Research outputs'],['field','Field highlights'],['logbook','Complete logbook'],['next','Timeline & milestones']];
+const sections=[['overview','Overview'],['team','Research team'],['research','Research progress'],['meetings','Supervisory meetings'],['outputs','Research outputs'],['field','Field highlights'],['logbook','Logbook'],['next','Timeline & milestones']];
 const domainNames=['Epidemiology and disease control','Family health','Health system management','Environmental health','Occupational health','Health promotion'];
 const shortDomains=['Epidemiology','Family health','Health systems','Environmental','Occupational','Health promotion'];
 const researchTabs=[['profile','Study profile'],['dataset','Data preparation'],['obj1','Objective 1'],['obj2','Objective 2'],['obj3','Objective 3'],['manuscript','Manuscript']];
