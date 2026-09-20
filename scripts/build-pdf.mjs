@@ -67,6 +67,34 @@ td,th{padding:11px 13px!important}
 .image-button{height:205px!important}
 .field-content h2{font-size:1.15rem!important;margin:8px 0!important}
 .field-content p{font-size:.84rem!important;line-height:1.55!important}
+/* Final landscape flow compaction */
+article,.card,.panel,.timeline-item,.activity-card,.team-card,figure,tr{break-inside:auto!important;page-break-inside:auto!important}
+img{break-inside:avoid!important;page-break-inside:avoid!important}
+body:has(.team-card) .team-card,
+body:has(.field-card) .field-card,
+body:has(.gantt-scroll) .gantt-scroll{break-inside:avoid!important;page-break-inside:avoid!important}
+body:has(.team-card) .section-head,
+body:has(.activity) .section-head,
+body:has(.outputs-grid) .section-head{margin:10px 0 7px!important}
+body:has(.team-card) .three-col{grid-template-columns:repeat(5,minmax(0,1fr))!important;gap:8px!important}
+body:has(.team-card) .team-card{padding:10px!important;min-height:0!important}
+body:has(.team-card) .team-card img{max-height:82px!important}
+body:has(.team-card) .team-card h3{margin:7px 0 4px!important}
+body:has(.team-card) .team-card p{margin:3px 0!important}
+body:has(.outputs-grid) .outputs-grid{break-inside:auto!important;page-break-inside:auto!important;gap:12px!important;margin:6px 0 10px!important}
+body:has(.outputs-grid) .review-panel,
+body:has(.outputs-grid) .award-panel{break-inside:avoid!important;page-break-inside:avoid!important}
+body:has(.outputs-grid) .panel{padding:14px!important}
+body:has(.activity) .activity{break-inside:avoid!important;page-break-inside:avoid!important;padding:9px 12px!important;gap:10px!important}
+body:has(.activity) .activity p{margin:2px 0!important;line-height:1.3!important}
+body:has(.activity) .source-note{break-inside:avoid!important;page-break-inside:avoid!important;margin-top:4px!important;padding-top:4px!important}
+body:has(table) table{break-inside:auto!important;page-break-inside:auto!important}
+body:has(table) thead{display:table-header-group!important}
+body:has(table) tr{break-inside:avoid!important;page-break-inside:avoid!important}
+body:has(table) td,body:has(table) th{padding:8px 10px!important;line-height:1.3!important}
+details{break-inside:auto!important;page-break-inside:auto!important}
+details>summary{break-after:avoid!important;page-break-after:avoid!important}
+
 /* Landscape section-specific pagination */
 body:has(.outputs-grid) .outputs-grid{margin-top:8px!important}
 body:has(.outputs-grid) .award-panel,
