@@ -12,7 +12,7 @@ page.setDefaultTimeout(15000);
 page.setDefaultNavigationTimeout(20000);
 
 const css=`
-@page { size:A4; margin:10mm 10mm 12mm; }
+@page { size:A4 landscape; margin:10mm 10mm 12mm; }
 html,body{background:#fff!important}
 .sidebar,.top-actions,.presentation-controls,dialog,.skip,.no-print{display:none!important}
 button:not(.image-button):not(.output-image):not(.gantt-bar){display:none!important}
@@ -52,7 +52,7 @@ for(let i=0;i<sections.length;i++){
  await page.goto(`http://127.0.0.1:8000/#${id}`,{waitUntil:"domcontentloaded",timeout:20000});
  await page.waitForFunction(expected => document.title.toLowerCase().startsWith(expected.toLowerCase()), id==="next"?"Timeline":label, {timeout:10000}).catch(()=>{});
  await page.waitForTimeout(500);
- await page.addStyleTag({content:css + (id==="next" ? "\n@page { size: A4 landscape !important; margin:10mm 10mm 12mm; }\n" : "")});
+ await page.addStyleTag({content:css + "\n@page { size: A4 landscape !important; margin:10mm 10mm 12mm; }\n"});
  await page.evaluate(async()=>{
    const pending=[...document.images].filter(x=>!x.complete);
    await Promise.race([
@@ -65,7 +65,7 @@ for(let i=0;i<sections.length;i++){
    if(document.fonts?.ready) await Promise.race([document.fonts.ready,new Promise(r=>setTimeout(r,3000))]);
  });
  const p=`output/sections/${String(i+1).padStart(2,"0")}-${id}.pdf`;
- await page.pdf({path:p,format:"A4",landscape:id==="next",printBackground:true,preferCSSPageSize:false,displayHeaderFooter:true,headerTemplate:"<div></div>",footerTemplate:`<div style="font-size:8px;width:100%;text-align:center;color:#777;">DrPH Research Progress &nbsp; | &nbsp; ${label} &nbsp; | &nbsp; <span class="pageNumber"></span>/<span class="totalPages"></span></div>`,margin:{top:"10mm",right:"10mm",bottom:"14mm",left:"10mm"}});
+ await page.pdf({path:p,format:"A4",landscape:true,printBackground:true,preferCSSPageSize:false,displayHeaderFooter:true,headerTemplate:"<div></div>",footerTemplate:`<div style="font-size:8px;width:100%;text-align:center;color:#777;">DrPH Research Progress &nbsp; | &nbsp; ${label} &nbsp; | &nbsp; <span class="pageNumber"></span>/<span class="totalPages"></span></div>`,margin:{top:"10mm",right:"10mm",bottom:"14mm",left:"10mm"}});
  console.log(`Finished: ${label}`);
 }
 await browser.close();
