@@ -43,7 +43,7 @@ for(let i=0;i<sections.length;i++){
  await page.goto(`http://127.0.0.1:8000/#${id}`,{waitUntil:"domcontentloaded",timeout:20000});
  await page.waitForFunction(expected => document.title.toLowerCase().startsWith(expected.toLowerCase()), id==="next"?"Timeline":label, {timeout:10000}).catch(()=>{});
  await page.waitForTimeout(500);
- await page.addStyleTag({content:css});
+ await page.addStyleTag({content:css + (id==="next" ? "\n@page { size: A4 landscape !important; margin:10mm 10mm 12mm; }\n" : "")});
  await page.evaluate(async()=>{
    const pending=[...document.images].filter(x=>!x.complete);
    await Promise.race([
