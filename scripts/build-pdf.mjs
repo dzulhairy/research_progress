@@ -39,8 +39,34 @@ body:has(.gantt-scroll) .gantt-scroll{break-inside:avoid!important;page-break-in
 .image-button img,.output-image img{display:block!important;width:100%!important;height:auto!important;max-height:115mm!important;object-fit:contain!important}
 .expand-label{display:none!important}
 .workspace{margin:0!important;width:100%!important}
-main,.container,.content,section{max-width:none!important;width:auto!important}
-section,article,.card,.panel,.timeline-item,.activity-card,.team-card,figure,img,tr{break-inside:avoid;page-break-inside:avoid}
+main,.container,.content{max-width:none!important;width:auto!important}
+#content{padding:0!important}
+article,.card,.panel,.timeline-item,.activity-card,.team-card,figure,img,tr{break-inside:avoid;page-break-inside:avoid}
+.eyebrow{margin-bottom:8px!important}
+h1{font-size:2.15rem!important;margin-bottom:9px!important}
+.intro{margin-bottom:16px!important;line-height:1.45!important}
+.section-head{margin:18px 0 10px!important}
+.panel{padding:18px!important}
+.study-banner{margin:14px 0!important;padding:18px 22px!important}
+.study-title{font-size:1.3rem!important;line-height:1.35!important}
+.objective-card{min-height:0!important;padding:16px!important}
+.objective-card .card-top{margin-bottom:12px!important}
+.overview-bottom{margin-top:14px!important}
+.status-line{padding-top:12px!important;margin-top:12px!important}
+.work-item{padding:14px 0!important}
+.note-box{margin-top:10px!important;padding:12px 16px!important}
+.activity{padding:13px 16px!important;gap:14px!important}
+.source-note{padding-top:8px!important}
+.outputs-grid{margin:14px 0!important;gap:16px!important}
+.award-panel{padding:22px!important}
+.review-panel h2{margin:10px 0!important}
+.review-track{padding-top:14px!important}
+.table-wrap{overflow:visible!important}
+td,th{padding:11px 13px!important}
+.field-content{padding:18px!important}
+.image-button{height:205px!important}
+.field-content h2{font-size:1.15rem!important;margin:8px 0!important}
+.field-content p{font-size:.84rem!important;line-height:1.55!important}
 img{max-width:100%!important;height:auto!important}
 a{color:inherit!important;text-decoration:none!important}
 *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
@@ -53,7 +79,9 @@ for(let i=0;i<sections.length;i++){
  await page.waitForFunction(expected => document.title.toLowerCase().startsWith(expected.toLowerCase()), id==="next"?"Timeline":label, {timeout:10000}).catch(()=>{});
  await page.waitForTimeout(500);
  await page.addStyleTag({content:css + "\n@page { size: A4 landscape !important; margin:10mm 10mm 12mm; }\n"});
- await page.evaluate(async()=>{
+ await page.evaluate(async(id)=>{
+   if(id==="next") document.querySelectorAll("details").forEach(d=>d.open=true);
+
    const pending=[...document.images].filter(x=>!x.complete);
    await Promise.race([
      Promise.all(pending.map(img=>new Promise(resolve=>{
@@ -63,7 +91,7 @@ for(let i=0;i<sections.length;i++){
      new Promise(resolve=>setTimeout(resolve,5000))
    ]);
    if(document.fonts?.ready) await Promise.race([document.fonts.ready,new Promise(r=>setTimeout(r,3000))]);
- });
+ }, id);
  const p=`output/sections/${String(i+1).padStart(2,"0")}-${id}.pdf`;
  await page.pdf({path:p,format:"A4",landscape:true,printBackground:true,preferCSSPageSize:false,displayHeaderFooter:true,headerTemplate:"<div></div>",footerTemplate:`<div style="font-size:8px;width:100%;text-align:center;color:#777;">DrPH Research Progress &nbsp; | &nbsp; ${label} &nbsp; | &nbsp; <span class="pageNumber"></span>/<span class="totalPages"></span></div>`,margin:{top:"10mm",right:"10mm",bottom:"14mm",left:"10mm"}});
  console.log(`Finished: ${label}`);
