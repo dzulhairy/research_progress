@@ -16,7 +16,15 @@ const css=`
 html,body{background:#fff!important}
 .sidebar,.top-actions,.presentation-controls,dialog,.skip,.no-print{display:none!important}
 button:not(.image-button):not(.output-image):not(.gantt-bar){display:none!important}
-.gantt-bar{display:block!important;visibility:visible!important;opacity:1!important;print-color-adjust:exact!important;-webkit-print-color-adjust:exact!important}
+.gantt-scroll{overflow:visible!important}
+.gantt{min-width:0!important;padding:12px!important}
+.gantt-years,.gantt-months{grid-template-columns:185px repeat(17,minmax(0,1fr))!important}
+.gantt-row{grid-template-columns:185px 1fr!important;min-height:76px!important}
+.gantt-cell{min-height:76px!important}
+.gantt-label{padding:14px 10px!important}
+.gantt-bar{display:block!important;visibility:visible!important;opacity:1!important;print-color-adjust:exact!important;-webkit-print-color-adjust:exact!important;margin:0 2px!important;padding:8px 2px!important;min-height:32px!important;font-size:0!important;line-height:0!important;overflow:hidden!important}
+.gantt-bar::after{content:""!important}
+.gantt-bar:hover{filter:none!important;transform:none!important}
 .image-button,.output-image{display:block!important;border:0!important;padding:0!important;background:transparent!important;width:100%!important}
 .image-button img,.output-image img{display:block!important;width:100%!important;height:auto!important;max-height:115mm!important;object-fit:contain!important}
 .expand-label{display:none!important}
