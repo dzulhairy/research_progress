@@ -22,26 +22,20 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-
       - name: Set up Node
         uses: actions/setup-node@v4
         with:
           node-version: "22"
-
-      - name: Install Playwright
+      - name: Install PDF dependencies
         run: |
-          npm install playwright@1.55.0
+          npm install playwright@1.55.0 pdf-lib@1.17.1
           npx playwright install --with-deps chromium
-
       - name: Start local site
         run: |
           python3 -m http.server 8000 --bind 127.0.0.1 > /tmp/research-progress-http.log 2>&1 &
-          echo $! > /tmp/research-progress-http.pid
           sleep 2
-
-      - name: Build A4 PDF
+      - name: Build complete A4 PDF
         run: node scripts/build-pdf.mjs
-
       - name: Upload PDF
         uses: actions/upload-artifact@v4
         with:
