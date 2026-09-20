@@ -17,12 +17,21 @@ html,body{background:#fff!important}
 .sidebar,.top-actions,.presentation-controls,dialog,.skip,.no-print{display:none!important}
 button:not(.image-button):not(.output-image):not(.gantt-bar){display:none!important}
 .section-head:has(+ .gantt-scroll) .meta{display:none!important}
+body:has(.gantt-scroll) .timeline-summary{padding:16px 22px!important;gap:16px!important}
+body:has(.gantt-scroll) .timeline-summary h2{margin:4px 0!important;font-size:1.25rem!important}
+body:has(.gantt-scroll) .timeline-summary p{font-size:.78rem!important;line-height:1.35!important}
+body:has(.gantt-scroll) .section-head{margin:14px 0 8px!important}
+body:has(.gantt-scroll) .section-head h2{margin:0!important}
+body:has(.gantt-scroll) .gantt-scroll{break-inside:avoid!important;page-break-inside:avoid!important}
 .gantt-scroll{overflow:visible!important}
-.gantt{min-width:0!important;padding:12px!important}
+.gantt{min-width:0!important;padding:8px!important}
 .gantt-years,.gantt-months{grid-template-columns:185px repeat(17,minmax(0,1fr))!important}
-.gantt-row{grid-template-columns:185px 1fr!important;min-height:76px!important}
-.gantt-cell{min-height:76px!important}
-.gantt-label{padding:14px 10px!important}
+.gantt-row{grid-template-columns:185px 1fr!important;min-height:58px!important}
+.gantt-cell{min-height:58px!important}
+.gantt-label{padding:8px 10px!important;font-size:.78rem!important}
+.gantt-label small{margin-top:3px!important;font-size:.68rem!important}
+.gantt-years>*{padding:7px 0!important}
+.gantt-months span{padding:7px 0!important}
 .gantt-bar{display:block!important;visibility:visible!important;opacity:1!important;print-color-adjust:exact!important;-webkit-print-color-adjust:exact!important;margin:0 2px!important;padding:8px 2px!important;min-height:32px!important;font-size:0!important;line-height:0!important;overflow:hidden!important}
 .gantt-bar::after{content:""!important}
 .gantt-bar:hover{filter:none!important;transform:none!important}
