@@ -16,6 +16,7 @@ const css=`
 html,body{background:#fff!important}
 .sidebar,.top-actions,.presentation-controls,dialog,.skip,.no-print{display:none!important}
 button:not(.image-button):not(.output-image):not(.gantt-bar){display:none!important}
+.section-head:has(+ .gantt-scroll) .meta{display:none!important}
 .gantt-scroll{overflow:visible!important}
 .gantt{min-width:0!important;padding:12px!important}
 .gantt-years,.gantt-months{grid-template-columns:185px repeat(17,minmax(0,1fr))!important}
@@ -55,7 +56,7 @@ for(let i=0;i<sections.length;i++){
    if(document.fonts?.ready) await Promise.race([document.fonts.ready,new Promise(r=>setTimeout(r,3000))]);
  });
  const p=`output/sections/${String(i+1).padStart(2,"0")}-${id}.pdf`;
- await page.pdf({path:p,format:"A4",printBackground:true,preferCSSPageSize:true,displayHeaderFooter:true,headerTemplate:"<div></div>",footerTemplate:`<div style="font-size:8px;width:100%;text-align:center;color:#777;">DrPH Research Progress &nbsp; | &nbsp; ${label} &nbsp; | &nbsp; <span class="pageNumber"></span>/<span class="totalPages"></span></div>`,margin:{top:"10mm",right:"10mm",bottom:"14mm",left:"10mm"}});
+ await page.pdf({path:p,format:"A4",landscape:id==="next",printBackground:true,preferCSSPageSize:false,displayHeaderFooter:true,headerTemplate:"<div></div>",footerTemplate:`<div style="font-size:8px;width:100%;text-align:center;color:#777;">DrPH Research Progress &nbsp; | &nbsp; ${label} &nbsp; | &nbsp; <span class="pageNumber"></span>/<span class="totalPages"></span></div>`,margin:{top:"10mm",right:"10mm",bottom:"14mm",left:"10mm"}});
  console.log(`Finished: ${label}`);
 }
 await browser.close();
