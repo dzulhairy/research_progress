@@ -14,7 +14,11 @@ page.setDefaultNavigationTimeout(20000);
 const css=`
 @page { size:A4; margin:10mm 10mm 12mm; }
 html,body{background:#fff!important}
-.sidebar,.top-actions,.presentation-controls,dialog,button,.skip,.no-print{display:none!important}
+.sidebar,.top-actions,.presentation-controls,dialog,.skip,.no-print{display:none!important}
+button:not(.image-button):not(.output-image){display:none!important}
+.image-button,.output-image{display:block!important;border:0!important;padding:0!important;background:transparent!important;width:100%!important}
+.image-button img,.output-image img{display:block!important;width:100%!important;height:auto!important;max-height:115mm!important;object-fit:contain!important}
+.expand-label{display:none!important}
 .workspace{margin:0!important;width:100%!important}
 main,.container,.content,section{max-width:none!important;width:auto!important}
 section,article,.card,.panel,.timeline-item,.activity-card,.team-card,figure,img,tr{break-inside:avoid;page-break-inside:avoid}
