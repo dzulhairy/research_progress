@@ -67,6 +67,26 @@ td,th{padding:11px 13px!important}
 .image-button{height:205px!important}
 .field-content h2{font-size:1.15rem!important;margin:8px 0!important}
 .field-content p{font-size:.84rem!important;line-height:1.55!important}
+/* Landscape section-specific pagination */
+body:has(.outputs-grid) .outputs-grid{margin-top:8px!important}
+body:has(.outputs-grid) .award-panel,
+body:has(.outputs-grid) .review-panel{padding:16px!important}
+body:has(.outputs-grid) .award-panel h2{font-size:1.35rem!important}
+body:has(.outputs-grid) .award-number{font-size:4.4rem!important;margin:10px 0!important}
+body:has(.outputs-grid) .metric-pair{padding-top:10px!important;margin-top:10px!important}
+body:has(.outputs-grid) .review-track{margin-top:8px!important}
+body:has(.team-card) .three-col{grid-template-columns:repeat(5,minmax(0,1fr))!important;gap:10px!important}
+body:has(.team-card) .team-card{padding:12px!important}
+body:has(.team-card) .team-card h3{font-size:.88rem!important;line-height:1.25!important}
+body:has(.team-card) .team-card p{font-size:.75rem!important;line-height:1.35!important}
+body:has(.team-card) .team-card img{max-height:95px!important;object-fit:contain!important}
+body:has(.activity) .activity{grid-template-columns:92px minmax(0,1fr) 165px 70px!important}
+body:has(.activity) .log-list{gap:7px!important}
+body:has(.activity) .activity h3{font-size:.9rem!important}
+body:has(.activity) .activity-date,
+body:has(.activity) .activity-role{font-size:.76rem!important}
+body:has(.activity) .activity-domain{font-size:.7rem!important}
+
 img{max-width:100%!important;height:auto!important}
 a{color:inherit!important;text-decoration:none!important}
 *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
