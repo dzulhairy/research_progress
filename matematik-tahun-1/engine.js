@@ -112,8 +112,9 @@ function generateQuestion(topic,grade,level){
    a=randint(3,15)*10;b=pick([10,20,30,40,50]);return numeric(`Harga RM${a}. Diskaun ${b}%. Berapakah harga selepas diskaun?`,a*(100-b)/100,"Harga selepas diskaun = harga asal × (100 − peratus diskaun) ÷ 100.",{prefix:"RM",decimals:2,step:5});
  }
  if(topic==="data"){
-   a=randint(3,15);b=randint(3,15);c=randint(3,15);
-   const third=a+b+c;return numeric(`Bilangan buku dibaca dalam 3 minggu ialah ${a}, ${b} dan ${c}. Berapakah jumlah buku?`,third,"Jumlahkan ketiga-tiga minggu.",{suffix:" buku",step:3});
+   a=randint(5,25);b=randint(1,Math.min(4,a-1));
+   if(randint(0,1)===0)return numeric(`Tiga minggu mencatat ${a-b}, ${a} dan ${a+b} buku. Berapakah min (purata) bilangan buku?`,a,"Min = jumlah semua nilai ÷ 3.",{suffix:" buku",step:1});
+   return numeric(`Data: ${a-b}, ${a}, ${a+b}. Berapakah julat data ini?`,2*b,"Julat = nilai tertinggi − nilai terendah.",{step:1});
  }
  if(topic==="nisbah"){
    a=randint(1,8);b=randint(1,8);c=randint(2,5);
