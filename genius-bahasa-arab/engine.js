@@ -42,10 +42,11 @@ export function makeQuestions(moduleId,level){
  }
  return out;
 }
-export function newProgress(){return {version:1,name:'',age:'all',audio:true,levels:{}};}
+export function newProgress(){return {version:1,name:'',age:'all',audio:true,autoSpeak:true,speechRate:.8,voiceURI:'',levels:{}};}
 export function validateProgress(value){
  if(!value||typeof value!=='object'||value.version!==1)throw Error('Format fail kemajuan tidak sah.');
  const clean=newProgress();clean.name=String(value.name||'').slice(0,30);clean.age=['all','7–8','9–10','11–12'].includes(value.age)?value.age:'all';clean.audio=value.audio!==false;
+ clean.autoSpeak=value.autoSpeak!==false;clean.speechRate=[.6,.8,1].includes(value.speechRate)?value.speechRate:.8;clean.voiceURI=typeof value.voiceURI==='string'?value.voiceURI.slice(0,300):'';
  if(!value.levels||typeof value.levels!=='object'||Array.isArray(value.levels))throw Error('Rekod tahap tidak sah.');
  for(const [key,v] of Object.entries(value.levels)){
   const [id,level]=key.split(':');

@@ -1,4 +1,5 @@
 import {MODULES} from './data.js';
+import {createSpeaker,arabicVoices} from './speech.js';
 import {STORAGE_KEY,normalize,makeQuestions,newProgress,validateProgress,recordLevel,totalStars} from './engine.js';
 const $=selector=>document.querySelector(selector);
 const escape=value=>String(value).replace(/[&<>"']/g,x=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[x]));
@@ -7,14 +8,18 @@ try{const saved=localStorage.getItem(STORAGE_KEY);if(saved)progress=validateProg
 function toast(message){$('#toast').textContent=message;$('#toast').classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('#toast').classList.remove('show'),4500);}
 function save(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(progress));storageOK=true;}catch{storageOK=false;toast('Pelayar tidak dapat menyimpan kemajuan. Muat turun salinan di ruang ibu bapa.');}updateStars();}
 function updateStars(){$('#total-stars').textContent='⭐ '+totalStars(progress);}
-function voices(){return 'speechSynthesis' in window?speechSynthesis.getVoices().filter(x=>/^ar(?:-|$)/i.test(x.lang)):[];}
-function voiceInfo(){const supported=voices().length>0;$('#voice-info').textContent=supported?'Suara Arab tersedia. Tekan ikon pembesar suara untuk mendengar.':'Suara Arab belum tersedia pada peranti ini. Aktifkan atau muat turun suara Arab dalam tetapan pertuturan peranti. Permainan masih boleh dimainkan tanpa audio.';}
-function speak(text){
- if(!progress.audio){toast('Aktifkan suara dalam ruang ibu bapa.');return;}
- const arabic=voices()[0];if(!arabic){toast('Tiada suara Arab tersedia. Semak tetapan pertuturan peranti.');return;}
- speechSynthesis.cancel();const utterance=new SpeechSynthesisUtterance(text);utterance.voice=arabic;utterance.lang=arabic.lang;utterance.rate=.72;
- utterance.onerror=()=>toast('Suara tidak dapat dimainkan. Cuba lagi atau semak tetapan peranti.');speechSynthesis.speak(utterance);
+const speaker=createSpeaker({synth:window.speechSynthesis,Utterance:window.SpeechSynthesisUtterance,onState:({state,message})=>{
+ const status=$('#speech-status')||$('#home-speech-status');
+ if(status)status.textContent=message||(state==='speaking'?'Sedang menyebut…':state==='loading'?'Menyediakan suara…':'Tekan Dengar untuk dengar semula.');
+ const button=$('#speak');if(button){button.textContent=state==='speaking'?'🔊 Sedang menyebut…':'🔊 Dengar';button.setAttribute('aria-busy',String(state==='loading'||state==='speaking'));}
+ if($('#settings').open&&message)$('#voice-info').textContent=message;
+}});
+function voices(){return arabicVoices(window.speechSynthesis);}
+function voiceInfo(){
+ const available=voices();$('#voice-info').textContent=!speaker.supported?'Pelayar ini belum menyokong suara. Buka permainan dalam Safari atau Chrome.':available.length?'Suara Arab tersedia. Tekan Uji suara untuk mendengar.':'Tekan Uji suara untuk meminta suara Arab telefon. Jika masih senyap, tambah suara Arab dalam tetapan pertuturan dan semak kelantangan telefon.';
+ const select=$('#voice-select');select.innerHTML='<option value="">Automatik · Bahasa Arab</option>'+available.map(v=>`<option value="${escape(v.voiceURI)}">${escape(v.name)} (${escape(v.lang)})</option>`).join('');select.value=progress.voiceURI;
 }
+function speak(text,{manual=true,slow=false}={}){return speaker.read(text,{manual,enabled:progress.audio,rate:slow?.55:progress.speechRate,voiceURI:progress.voiceURI});}
 function goto(hash){if(location.hash===hash)route();else location.hash=hash;}
 function completed(id){return Object.entries(progress.levels).filter(([key,v])=>key.startsWith(id+':')&&v.score>=3).length;}
 function home(){
@@ -22,14 +27,14 @@ function home(){
  $('#app').innerHTML=`<section class="hero"><div><div class="eyebrow">BELAJAR · BERMAIN · BERJAYA</div><h1>Jom pandai<br>Bahasa Arab! <span style="font-size:.6em">✨</span></h1><p>Pengembaraan kecil, pengetahuan besar.<br>7 bahagian interaktif untuk umur 7–12 tahun.</p></div><div class="hero-art" aria-hidden="true"><span class="spark">✦</span><div class="book">📚</div><span class="arab-pill" lang="ar" dir="rtl">مَرْحَبًا</span></div></section>
  <div class="profile-row"><label for="player-name">👋 Hai, adik!</label><input id="player-name" maxlength="30" placeholder="Nama panggilan" autocomplete="off" value="${escape(progress.name)}"><div class="age-chips" role="group" aria-label="Cadangan mengikut umur">${['all','7–8','9–10','11–12'].map(age=>`<button class="chip ${progress.age===age?'active':''}" data-age="${age}" aria-pressed="${progress.age===age}">${age==='all'?'Semua':age}</button>`).join('')}</div></div>
  <section class="overview"><span class="plant" aria-hidden="true">🌱</span><div><h3>${escape(progress.name||'Adik')}, satu langkah lagi!</h3><p>${Object.values(progress.levels).filter(x=>x.score>=3).length} daripada 105 tahap selesai. Belajar mengikut rentak sendiri.</p></div><button class="primary teal" id="install">Pasang permainan</button></section>
- <div id="install-help"></div><div class="section-heading"><div><h2>Pilih pengembaraan 🚀</h2><p>Mulakan bahagian kegemaran, kemudian pilih tahap.</p></div><span class="tiny-tag">15 tahap / bahagian</span></div>
+ <div id="install-help"></div><section class="voice-welcome"><div><strong>Belajar dengan suara Arab 🔊</strong><p id="home-speech-status" role="status">Tekan Cuba suara dahulu. Kemudian dengar sebutan semasa bermain.</p></div><button class="primary" id="welcome-sound">Cuba suara</button></section><div class="section-heading"><div><h2>Pilih pengembaraan 🚀</h2><p>Mulakan bahagian kegemaran, kemudian pilih tahap.</p></div><span class="tiny-tag">15 tahap / bahagian</span></div>
  ${progress.age==='all'?'':`<p class="notice">Cadangan umur ${progress.age}: mulakan pada tahap ${progress.age==='7–8'?'1':progress.age==='9–10'?'6':'11'}. Semua tahap kekal terbuka untuk ulang kaji.</p>`}
  <section class="modules" aria-label="Bahagian pembelajaran">${MODULES.map((m,i)=>`<button class="module" data-module="${m.id}" style="--tint:${m.tint}"><span class="emoji" aria-hidden="true">${m.icon}</span><h3>${i+1}. ${m.title}</h3><p>${m.description}</p><div class="meta"><span>${completed(m.id)}/15 tahap selesai</span><span>MULA</span></div><div class="mini-track"><i style="width:${completed(m.id)/15*100}%"></i></div></button>`).join('')}</section>
  <p class="notice" style="text-align:center;margin:24px 0 0">⭐ 3/5 betul: 1 bintang · 4/5: 2 bintang · 5/5: 3 bintang<br><button class="chip" id="parent-settings">Ruang ibu bapa & kemajuan</button></p>`;
  $('#player-name').addEventListener('input',event=>{progress.name=event.target.value;save();});
  document.querySelectorAll('[data-age]').forEach(el=>el.onclick=()=>{progress.age=el.dataset.age;save();home();});
  document.querySelectorAll('[data-module]').forEach(el=>el.onclick=()=>goto('#module/'+el.dataset.module));
- $('#install').onclick=install;$('#parent-settings').onclick=openSettings;
+ $('#install').onclick=install;$('#parent-settings').onclick=openSettings;$('#welcome-sound').onclick=()=>{progress.audio=true;save();speak('مَرْحَبًا');};
  if(!storageOK)toast('Kemajuan terdahulu tidak dapat dibaca. Semak atau pulihkan salinan dalam ruang ibu bapa.');
 }
 function levels(id){
@@ -41,10 +46,14 @@ function start(id,level){
  try{session={id,level,questions:makeQuestions(id,level),index:0,score:0,answered:false,selected:[]};question();}catch{goto('#');}
 }
 function question(){
- if(!session)return;const q=session.questions[session.index];session.answered=false;session.selected=[];
+ if(!session)return;speaker.stop();const q=session.questions[session.index];session.answered=false;session.selected=[];
  const isArabic=q.arabic||q.kind==='trace',promptClass=q.kind==='sentence'||q.kind==='spell'?'sentence':q.prompt.length>5?'word':'';
  $('#app').innerHTML=`<div class="quiz-wrap"><div class="page-top"><button class="back" id="back">Pilih tahap</button><span class="tiny-tag">${MODULES.find(x=>x.id===session.id).icon} Tahap ${session.level}</span></div><div class="quiz-stats"><span>Soalan ${session.index+1} daripada 5</span><span>⭐ ${session.score} betul</span></div><div class="track" role="progressbar" aria-label="Kemajuan latihan" aria-valuenow="${session.index}" aria-valuemin="0" aria-valuemax="5"><i style="width:${session.index*20}%"></i></div><section class="question-card"><div class="question-top"><span class="tag">${q.label}</span><button class="icon-button" id="speak" aria-label="Dengar sebutan Arab">🔊</button></div><h2 tabindex="-1" id="question-title">${q.instruction}</h2><div class="prompt ${promptClass} ${isArabic?'arabic':''}" ${isArabic?'lang="ar" dir="rtl"':''}>${escape(q.prompt)}</div>${q.color?`<div aria-hidden="true" style="background:${q.color};width:70px;height:48px;margin:-20px auto 25px;border:2px solid #ddd;border-radius:14px"></div>`:''}<div id="interaction"></div><div id="feedback" aria-live="polite"></div><button id="next" class="primary next hidden">${session.index===4?'Lihat keputusan ✨':'Soalan seterusnya'}</button></section></div>`;
  $('#back').onclick=()=>goto('#module/'+session.id);$('#speak').onclick=()=>speak(q.speak);$('#next').onclick=next;
+ $('#speak').className='listen-button';$('#speak').textContent='🔊 Dengar';
+ $('#speak').insertAdjacentHTML('afterend','<button class="secondary" id="speak-slow" aria-label="Dengar sebutan perlahan">🐢 Perlahan</button>');
+ $('#speak-slow').onclick=()=>speak(q.speak,{slow:true});
+ $('#question-title').insertAdjacentHTML('beforebegin','<p id="speech-status" class="notice speech-status" role="status">Tekan Dengar untuk aktifkan suara Arab. Jika bacaan automatik dihidupkan, soalan seterusnya akan dibaca selepas ini.</p>');
  if(q.kind==='choice'){
   $('#interaction').innerHTML=`<div class="answers">${q.options.map((o,i)=>`<button class="answer ${q.answerArabic?'arabic':''}" ${q.answerArabic?'lang="ar" dir="rtl"':''} data-choice="${i}">${escape(o)}</button>`).join('')}</div>${q.hint?`<p class="notice">${escape(q.hint)}</p>`:''}`;
   document.querySelectorAll('[data-choice]').forEach(el=>el.onclick=()=>{
@@ -77,6 +86,7 @@ function question(){
   $('#trace-done').onclick=review;$('#paper').onclick=review;
  }
  $('#question-title').focus({preventScroll:true});
+ if(progress.autoSpeak)speak(q.speak,{manual:false});
 }
 function answerQuestion(correct){
  if(!session||session.answered)return;session.answered=true;if(correct)session.score++;
@@ -86,6 +96,7 @@ function answerQuestion(correct){
 }
 function next(){if(!session?.answered)return;if(session.index<4){session.index++;question();}else finish();}
 function finish(){
+ speaker.stop();
  const {id,level,score}=session;recordLevel(progress,id,level,score);save();
  const stars=score===5?3:score===4?2:score>=3?1:0;const trace=id==='trace';
  $('#app').innerHTML=`<section class="result"><div class="trophy">${stars?'🏆':'🌱'}</div><h1>${stars?'Hebat, teruskan!':'Setiap cubaan membawa kemajuan.'}</h1><p>Tahap ${level} · ${MODULES.find(m=>m.id===id).title}</p><div class="earned" aria-label="${stars} bintang">${'⭐'.repeat(stars)}${'☆'.repeat(3-stars)}</div><h2>${score} / 5 ${trace?'latihan disemak':'jawapan betul'}</h2><p>${trace?'Ganjaran berdasarkan latihan dan semakan ibu bapa.':stars?'Tahap selesai! Skor terbaik anda telah direkodkan.':'Dapatkan sekurang-kurangnya 3 jawapan betul untuk menamatkan tahap ini.'}</p><div class="actions"><button class="secondary" id="retry">Ulang tahap ↻</button>${level<15?'<button class="primary" id="continue">Tahap seterusnya</button>':''}<button class="secondary" id="levels">Pilih tahap</button></div></section>`;
@@ -104,9 +115,14 @@ async function install(){
  if(installPrompt){await installPrompt.prompt();await installPrompt.userChoice;installPrompt=null;return;}
  $('#install-help').innerHTML='<div class="install-note"><strong>Pasang pada skrin utama telefon</strong><br>iPhone/iPad: buka dalam Safari → Kongsi → Tambah ke Skrin Utama.<br>Android: buka menu pelayar → Pasang aplikasi / Tambah ke skrin utama.<br>Mod luar talian tersedia selepas lawatan pertama melalui HTTPS. Audio bergantung pada suara peranti.</div>';
 }
-function openSettings(){$('#audio-toggle').checked=progress.audio;$('#settings-status').textContent='';voiceInfo();$('#settings').showModal();}
+function openSettings(){speaker.stop();$('#audio-toggle').checked=progress.audio;$('#auto-speak').checked=progress.autoSpeak;$('#speech-rate').value=String(progress.speechRate);$('#settings-status').textContent='';voiceInfo();$('#settings').showModal();}
 $('#sound').onclick=openSettings;
-$('#audio-toggle').onchange=e=>{progress.audio=e.target.checked;save();};$('#test-audio').onclick=()=>speak('مَرْحَبًا');
+$('#audio-toggle').onchange=e=>{progress.audio=e.target.checked;if(!progress.audio)speaker.stop();save();};
+$('#auto-speak').onchange=e=>{progress.autoSpeak=e.target.checked;save();};
+$('#speech-rate').onchange=e=>{progress.speechRate=Number(e.target.value);save();};
+$('#voice-select').onchange=e=>{progress.voiceURI=e.target.value;save();};
+$('#test-audio').onclick=()=>speak('مَرْحَبًا');
+$('#settings').addEventListener('close',()=>speaker.stop());
 $('#reset-progress').onclick=()=>{if(confirm('Padam nama dan semua kemajuan Jom Arab pada pelayar ini? Muat turun salinan terlebih dahulu jika perlu.')){progress=newProgress();save();$('#settings').close();goto('#');toast('Kemajuan telah dikosongkan.');}};
 $('#export-progress').onclick=()=>{
  const blob=new Blob([JSON.stringify(progress,null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='jom-arab-kemajuan.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);$('#settings-status').textContent='Salinan kemajuan telah dimuat turun.';
@@ -116,10 +132,11 @@ $('#import-progress').onchange=async e=>{
  try{if(file.size>100000)throw Error('Fail terlalu besar. Pilih fail kemajuan Jom Arab.');const restored=validateProgress(JSON.parse(await file.text()));if(!confirm('Gantikan kemajuan pada peranti ini dengan fail yang dipilih?'))return;progress=restored;save();$('#settings').close();goto('#');toast('Kemajuan berjaya dipulihkan.');}catch(error){$('#settings-status').textContent='Gagal memulihkan: '+error.message;}finally{e.target.value='';}
 };
 function route(){
- if('speechSynthesis' in window)speechSynthesis.cancel();const parts=location.hash.slice(1).split('/');
+ speaker.stop();const parts=location.hash.slice(1).split('/');
  if(parts[0]==='module')levels(parts[1]);else if(parts[0]==='play')start(parts[1],Number(parts[2]));else home();window.scrollTo(0,0);
 }
 window.addEventListener('hashchange',route);window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();installPrompt=e;});
 if('speechSynthesis' in window)speechSynthesis.addEventListener('voiceschanged',voiceInfo);
+document.addEventListener('visibilitychange',()=>{if(document.hidden)speaker.stop();});
 if('serviceWorker' in navigator && location.protocol!=='file:')navigator.serviceWorker.register('./sw.js').catch(()=>{});
 updateStars();route();
