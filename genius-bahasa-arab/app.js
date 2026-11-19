@@ -1,5 +1,5 @@
 import {MODULES} from './data.js';
-import {createSpeaker,arabicVoices} from './speech.js';
+import {createRecordedSpeaker} from './recordings.js';
 import {STORAGE_KEY,normalize,makeQuestions,newProgress,validateProgress,recordLevel,totalStars} from './engine.js';
 const $=selector=>document.querySelector(selector);
 const escape=value=>String(value).replace(/[&<>"']/g,x=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[x]));
@@ -8,16 +8,15 @@ try{const saved=localStorage.getItem(STORAGE_KEY);if(saved)progress=validateProg
 function toast(message){$('#toast').textContent=message;$('#toast').classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('#toast').classList.remove('show'),4500);}
 function save(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(progress));storageOK=true;}catch{storageOK=false;toast('Pelayar tidak dapat menyimpan kemajuan. Muat turun salinan di ruang ibu bapa.');}updateStars();}
 function updateStars(){$('#total-stars').textContent='⭐ '+totalStars(progress);}
-const speaker=createSpeaker({synth:window.speechSynthesis,Utterance:window.SpeechSynthesisUtterance,onState:({state,message})=>{
+const speaker=createRecordedSpeaker({AudioClass:window.Audio,onState:({state,message})=>{
  const status=$('#speech-status')||$('#home-speech-status');
  if(status)status.textContent=message||(state==='speaking'?'Sedang menyebut…':state==='loading'?'Menyediakan suara…':'Tekan Dengar untuk dengar semula.');
  const button=$('#speak');if(button){button.textContent=state==='speaking'?'🔊 Sedang menyebut…':'🔊 Dengar';button.setAttribute('aria-busy',String(state==='loading'||state==='speaking'));}
  if($('#settings').open&&message)$('#voice-info').textContent=message;
 }});
-function voices(){return arabicVoices(window.speechSynthesis);}
+if(speaker.current){speaker.current.id='arabic-audio-player';speaker.current.hidden=true;document.body.append(speaker.current);}
 function voiceInfo(){
- const available=voices();$('#voice-info').textContent=!speaker.supported?'Pelayar ini belum menyokong suara. Buka permainan dalam Safari atau Chrome.':available.length?'Suara Arab tersedia. Tekan Uji suara untuk mendengar.':'Tekan Uji suara untuk meminta suara Arab telefon. Jika masih senyap, tambah suara Arab dalam tetapan pertuturan dan semak kelantangan telefon.';
- const select=$('#voice-select');select.innerHTML='<option value="">Automatik · Bahasa Arab</option>'+available.map(v=>`<option value="${escape(v.voiceURI)}">${escape(v.name)} (${escape(v.lang)})</option>`).join('');select.value=progress.voiceURI;
+ $('#voice-info').textContent=speaker.supported?'Sebutan Arab tersedia terus dalam permainan. Tekan Uji suara. Naikkan kelantangan media telefon jika bunyi perlahan.':'Pelayar ini belum menyokong audio. Buka permainan dalam Safari atau Chrome.';
 }
 function speak(text,{manual=true,slow=false}={}){return speaker.read(text,{manual,enabled:progress.audio,rate:slow?.55:progress.speechRate,voiceURI:progress.voiceURI});}
 function goto(hash){if(location.hash===hash)route();else location.hash=hash;}
@@ -120,7 +119,6 @@ $('#sound').onclick=openSettings;
 $('#audio-toggle').onchange=e=>{progress.audio=e.target.checked;if(!progress.audio)speaker.stop();save();};
 $('#auto-speak').onchange=e=>{progress.autoSpeak=e.target.checked;save();};
 $('#speech-rate').onchange=e=>{progress.speechRate=Number(e.target.value);save();};
-$('#voice-select').onchange=e=>{progress.voiceURI=e.target.value;save();};
 $('#test-audio').onclick=()=>speak('مَرْحَبًا');
 $('#settings').addEventListener('close',()=>speaker.stop());
 $('#reset-progress').onclick=()=>{if(confirm('Padam nama dan semua kemajuan Jom Arab pada pelayar ini? Muat turun salinan terlebih dahulu jika perlu.')){progress=newProgress();save();$('#settings').close();goto('#');toast('Kemajuan telah dikosongkan.');}};
@@ -136,7 +134,6 @@ function route(){
  if(parts[0]==='module')levels(parts[1]);else if(parts[0]==='play')start(parts[1],Number(parts[2]));else home();window.scrollTo(0,0);
 }
 window.addEventListener('hashchange',route);window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();installPrompt=e;});
-if('speechSynthesis' in window)speechSynthesis.addEventListener('voiceschanged',voiceInfo);
 document.addEventListener('visibilitychange',()=>{if(document.hidden)speaker.stop();});
 if('serviceWorker' in navigator && location.protocol!=='file:')navigator.serviceWorker.register('./sw.js').catch(()=>{});
 updateStars();route();
